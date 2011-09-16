@@ -45,7 +45,11 @@ public class Aereo extends Thread {
         peso = (int) (100+Math.random()*100);
         System.out.println("Il peso dell'aereo "+id+" e': "+peso);
         
+        // Richiediamo il servizio
         richiediServizio();
+        
+        // Richiediamo il servizio complementare
+        richiediServizio2();
         
     }
     
@@ -53,29 +57,32 @@ public class Aereo extends Thread {
         
         // Richiesta al gestore
         
-        // Se la richiesta è accettata blocco il gestore
-        
-        // Procedo con fase di decollo o atterraggio
+        // Comunico i tempi di decollo e atterraggio
         if (azione == 1)
             decollo();
         else atterraggio();
-        
-        // Rilascio il gestore
-        
+        try {
+            // Blocco il thread aereo
+            wait();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Aereo.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }
     
     public void richiediServizio2(){
         
         // Richiesta al gestore
         
-        // Se la richiesta è accettata blocco il gestore
-        
         // Procedo con la richiesta complementare
         if (azione == 1)
             atterraggio();
         else decollo();
-        
-        // Rilascio il gestore
+        try {
+            // Blocco il thread aereo
+            wait();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Aereo.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
     
