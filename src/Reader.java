@@ -36,19 +36,5 @@ public class Reader {
  
       return(_int);
    }
-    
-    /*
-    public static int readInt(){
-        DataInputStream readin;
-        readin = new DataInputStream(System.in);
-        int dato = 0;
-        
-        try{
-            dato = readin.readInt();
-        }catch(IOException e){
-            System.out.println(e);
-        }
-        return dato;
-    }
-     */
+
 }

@@ -12,10 +12,11 @@ import java.util.concurrent.Semaphore;
  */
 public class Gestore extends Thread {
     int threadAttivi = 0;
-    static Semaphore semaforoGestore;
+    //static Semaphore semaforoGestore;
+    Aeroporto aeroporto;
     
     public Gestore (int threadAttivi){
-        semaforoGestore = new Semaphore(this.threadAttivi);
+    //    semaforoGestore = new Semaphore(this.threadAttivi);
         Aeroporto aeroporto = new Aeroporto(2);
     }
     
@@ -24,17 +25,17 @@ public class Gestore extends Thread {
         
     }
     
-    static public void richiediServizio(){
+    public void richiediServizio(){
         //Aeroporto.usoPista();
-        if (Aeroporto.usoPista() == true){
+        if (this.aeroporto.usoPista() == true){
             //Aeroporto.rilascioPista();
             //System.out.println("Azione compiuta correttamente.");
         }
         else System.out.println("Piste occupate.");
     }
     
-    static public void fineServizio(){
-        Aeroporto.rilascioPista();
+    public void fineServizio(){
+        aeroporto.rilascioPista();
     }
     
 }

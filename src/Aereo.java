@@ -16,11 +16,12 @@ public class Aereo extends Thread {
     private int tipo;
     private int azione;
     private int peso;
+    Gestore gestore;
     
     
     public Aereo(int id, double tipo, double azione, double peso)
     {
-        
+        gestore = new Gestore(2);
         
     }
     
@@ -75,7 +76,7 @@ public class Aereo extends Thread {
         int tempo = 0;
         
         // Richiesta al gestore e blocco del thread corrente
-        Gestore.richiediServizio();
+        gestore.richiediServizio();
         
         // Quando il gestore mi sblocca acquisisco la pista dell'aeroporto
         if (azione == 1)
@@ -83,7 +84,7 @@ public class Aereo extends Thread {
             else tempo = atterraggio();
         
         // Comunico al gestore che ho finito e la pista può essere rilasciata
-        Gestore.fineServizio();
+        gestore.fineServizio();
         
         //System.out.println("L'aereo ha completato l'azione in "+tempo+"ms");
         
