@@ -12,10 +12,10 @@ import java.util.logging.Logger;
  * @author gioggi2002
  */
 public class Aereo extends Thread {
-    static int id;
-    static int tipo;
-    static int azione;
-    static int peso;
+    private int id;
+    private int tipo;
+    private int azione;
+    private int peso;
     
     
     public Aereo(int id, double tipo, double azione, double peso)
@@ -66,29 +66,30 @@ public class Aereo extends Thread {
             azione = 0;
         else azione = 1;
         
-        azione1();
-        
         // Richiediamo il servizio complementare
-        //richiediServizio2();
+        //azione1();
         
     }
     
-    static public void azione1(){
+    public void azione1(){
+        int tempo = 0;
         
         // Richiesta al gestore e blocco del thread corrente
         Gestore.richiediServizio();
         
         // Quando il gestore mi sblocca acquisisco la pista dell'aeroporto
-        if (Aereo.azione == 1)
-                Aereo.decollo();
-            else Aereo.atterraggio();
+        if (azione == 1)
+                tempo = decollo();
+            else tempo = atterraggio();
         
         // Comunico al gestore che ho finito e la pista può essere rilasciata
         Gestore.fineServizio();
         
+        //System.out.println("L'aereo ha completato l'azione in "+tempo+"ms");
+        
     }
       
-    static public void decollo(){
+    public int decollo(){
         int tempo;
         // Sospendo il thread per completare il decollo
         tempo = 20+(1*peso);
@@ -98,9 +99,10 @@ public class Aereo extends Thread {
             Logger.getLogger(Aereo.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.out.println("L'aereo "+id+" e' decollato in "+tempo+"ms");
+        return tempo;
     }
     
-    static public void atterraggio(){
+    public int atterraggio(){
         int tempo;
         // Sospendo il thread per completare l'atterraggio
         tempo = 50+(1*peso);
@@ -110,5 +112,6 @@ public class Aereo extends Thread {
             Logger.getLogger(Aereo.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.out.println("L'aereo "+id+" e' atterrato in "+tempo+"ms");
+        return tempo;
     }
 }

@@ -24,11 +24,14 @@ public class Main {
         System.out.println("Inserisci il numero di aerei richiesti: ");
         numAerei = Reader.readInt();
         System.out.println("Il numero letto e': "+numAerei+"\n");
+        // Creo l'aeroporto
         Aeroporto aeroporto = new Aeroporto(0);
+        // Creo il gestore
         Gestore gestore = new Gestore(0);
-        
+        // Creo gli aerei
         Thread threadArray[] = new Thread[numAerei];
         for(i = 0; i < numAerei; ++i){
+            
             threadArray[i] = new Aereo(0,0,0,0);
             threadArray[i].start();
             threadArray[i].setPriority(1);
