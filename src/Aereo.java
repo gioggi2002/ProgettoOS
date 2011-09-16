@@ -33,23 +33,37 @@ public class Aereo extends Thread {
         id = (int) (current.getId()-9);
         // Otteniamo il tipo di aereo (di linea/privato)
         tipo = (int) (Math.random()*2);
-        if (tipo == 1)
+        if (tipo == 1) {
             System.out.println("L'aereo "+id+" e' un aereo di linea. ");
-        else System.out.println("L'aereo "+id+" e' un aereo privato. ");
+            System.out.println("L'aereo "+id+" conserva priorita': "+current.getPriority());
+        }
+        else {
+            // Aumentiamo la priorità per l'aereo privato
+            System.out.println("L'aereo "+id+" e' un aereo privato. ");
+            current.setPriority(current.getPriority()+1);
+            System.out.println("L'aereo "+id+" guadagna priorita': "+current.getPriority());
+        }
         // Otteniamo la richiesta dell'aereo (decollo/atterraggio)
         azione = (int) (Math.random()*2);
-        if (azione == 1)
+        if (azione == 1) {
+            // Aumentiamo la priorità per l'aereo in atterraggio
+            System.out.println("L'azione richiesta dall'aereo "+id+" e' l'atterraggio. ");
+            current.setPriority(current.getPriority()+1);
+            System.out.println("L'aereo "+id+" guadagna priorita': "+current.getPriority());
+        }
+        else { 
             System.out.println("L'azione richiesta dall'aereo "+id+" e' il decollo. ");
-        else System.out.println("L'azione richiesta dall'aereo "+id+" e' l'atterraggio. ");
+            System.out.println("L'aereo "+id+" conserva priorita': "+current.getPriority());
+        }
         // Otteniamo il peso dell'aereo
         peso = (int) (100+Math.random()*100);
         System.out.println("Il peso dell'aereo "+id+" e': "+peso);
         
         // Richiediamo il servizio
-        richiediServizio();
+        //richiediServizio();
         
         // Richiediamo il servizio complementare
-        richiediServizio2();
+        //richiediServizio2();
         
     }
     
@@ -61,12 +75,12 @@ public class Aereo extends Thread {
         if (azione == 1)
             decollo();
         else atterraggio();
-        try {
+        /*try {
             // Blocco il thread aereo
             wait();
             } catch (InterruptedException ex) {
                 Logger.getLogger(Aereo.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }*/
     }
     
     public void richiediServizio2(){
@@ -77,12 +91,12 @@ public class Aereo extends Thread {
         if (azione == 1)
             atterraggio();
         else decollo();
-        try {
+        /*try {
             // Blocco il thread aereo
             wait();
         } catch (InterruptedException ex) {
             Logger.getLogger(Aereo.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         
     }
     

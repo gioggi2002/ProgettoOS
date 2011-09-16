@@ -29,6 +29,7 @@ public class Main {
         for(i = 0; i < numAerei; ++i){
             threadArray[i] = new Aereo(0,0,0,0);
             threadArray[i].start();
+            threadArray[i].setPriority(1);
         }
     }
 }
