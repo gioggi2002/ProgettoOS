@@ -28,6 +28,7 @@ public class Main {
         Aeroporto aeroporto = new Aeroporto(0);
         // Creo il gestore
         Gestore gestore = new Gestore(aeroporto);
+        
         // Creo gli aerei
         Thread threadArray[] = new Thread[numAerei];
         for(i = 0; i < numAerei; ++i){

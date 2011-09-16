@@ -1,4 +1,5 @@
 
+import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 
 /*
@@ -12,12 +13,15 @@ import java.util.concurrent.Semaphore;
  */
 public class Gestore extends Thread {
     int threadAttivi = 0;
-    //static Semaphore semaforoGestore;
     Aeroporto aeroporto;
+    ArrayList priorita4;
+    ArrayList priorita3;
+    ArrayList priorita2;
+    ArrayList priorita1;
     
     public Gestore (Aeroporto aeroporto){
-    //    semaforoGestore = new Semaphore(this.threadAttivi);
         this.aeroporto = aeroporto;
+        
     }
     
     @Override
@@ -25,17 +29,41 @@ public class Gestore extends Thread {
         
     }
     
-    public void richiediServizio(){
+    public void richiediServizio(int peso, int priorita){
         //Aeroporto.usoPista();
         if (this.aeroporto.usoPista() == true){
             //Aeroporto.rilascioPista();
             //System.out.println("Azione compiuta correttamente.");
+            inserisciCoda(peso, priorita);
         }
-        //else System.out.println("Piste occupate.");
+        else inserisciCoda(peso, priorita);
     }
     
     public void fineServizio(){
         aeroporto.rilascioPista();
+    }
+    
+    public void inserisciCoda(int peso, int priorita){
+        System.out.println("Il peso è "+peso);
+        switch (priorita) {
+            case 4:
+                priorita4.add(peso);
+                System.out.println("Aggiunto alla coda 4");
+                break;
+            case 3:
+                priorita3.add(peso);
+                System.out.println("Aggiunto alla coda 3");
+                break;
+            case 2:
+                priorita2.add(peso);
+                System.out.println("Aggiunto alla coda 2");
+                break;
+            case 1:
+                priorita1.add(peso);
+                System.out.println("Aggiunto alla coda 1");
+                break;        
+        }
+            
     }
     
 }

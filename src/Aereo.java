@@ -16,6 +16,7 @@ public class Aereo extends Thread {
     private int tipo;
     private int azione;
     private int peso;
+    public int priorita;
     private Gestore gestore = null;
     
     
@@ -61,8 +62,10 @@ public class Aereo extends Thread {
         peso = (int) (100+Math.random()*100);
         //System.out.println("Il peso dell'aereo "+id+" e': "+peso);
         
+        priorita = current.getPriority();
+        
         // Richiediamo il servizio
-        azione1();
+        azione1(peso, priorita);
         
         if(azione == 1){
             azione = 0;
@@ -74,15 +77,15 @@ public class Aereo extends Thread {
         }
         
         // Richiediamo il servizio complementare
-        azione1();
+        azione1(peso, priorita);
         
     }
     
-    public void azione1(){
+    public void azione1(int peso, int priorita){
         int tempo = 0;
         
         // Richiesta al gestore e blocco del thread corrente
-        gestore.richiediServizio();
+        gestore.richiediServizio(peso, priorita);
         
         // Quando il gestore mi sblocca acquisisco la pista dell'aeroporto
         if (azione == 1)
@@ -120,5 +123,9 @@ public class Aereo extends Thread {
         }
         System.out.println("L'aereo "+id+" e' atterrato in "+tempo+"ms");
         return tempo;
+    }
+    
+    public int getPeso(){
+        return peso;
     }
 }
