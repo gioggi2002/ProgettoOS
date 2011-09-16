@@ -24,6 +24,7 @@ public class Main {
         System.out.println("Inserisci il numero di aerei richiesti: ");
         numAerei = Reader.readInt();
         System.out.println("Il numero letto e': "+numAerei+"\n");
+        Aeroporto aeroporto = new Aeroporto(0);
         
         Thread threadArray[] = new Thread[numAerei];
         for(i = 0; i < numAerei; ++i){

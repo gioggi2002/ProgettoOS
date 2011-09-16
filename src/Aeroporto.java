@@ -11,24 +11,29 @@ import java.util.concurrent.Semaphore;
  * @author gioggi2002
  */
 public class Aeroporto {
-    private int numeroPiste = 2;
-    int pisteInUso = 0;
-    Semaphore semaforo;
+    int numeroPiste = 2;
+    //int pisteInUso = 0;
+    static Semaphore semaforo;
     
-    public Aeroporto(int piste){
-        this.semaforo = new Semaphore(numeroPiste);
+    public Aeroporto(int numeroPiste){
+        semaforo = new Semaphore(this.numeroPiste);
     }
     
-    public boolean usoPista(){
+    static public boolean usoPista(){
         try{
+            System.out.println(semaforo.availablePermits());
             semaforo.acquire();
-            if (semaforo.availablePermits()==0)
-            return true;
+            if (semaforo.availablePermits()==0){
+            System.out.println("Nessuna pista disponibile.");
+            return true;}
+            else System.out.println("Pista utilizzata con successo.");
         }catch(InterruptedException e){}
+        
         return false;
+        
     }
     
-    public void rilascioPista(){
+    static public void rilascioPista(){
         semaforo.release();
     }
     

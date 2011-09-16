@@ -48,7 +48,7 @@ public class Aereo extends Thread {
         if (azione == 1) {
             // Aumentiamo la priorità per l'aereo in atterraggio
             System.out.println("L'azione richiesta dall'aereo "+id+" e' l'atterraggio. ");
-            current.setPriority(current.getPriority()+1);
+            current.setPriority(current.getPriority()+2);
             System.out.println("L'aereo "+id+" guadagna priorita': "+current.getPriority());
         }
         else { 
@@ -57,47 +57,46 @@ public class Aereo extends Thread {
         }
         // Otteniamo il peso dell'aereo
         peso = (int) (100+Math.random()*100);
-        System.out.println("Il peso dell'aereo "+id+" e': "+peso);
+        //System.out.println("Il peso dell'aereo "+id+" e': "+peso);
         
         // Richiediamo il servizio
-        //richiediServizio();
+        richiediServizio();
         
         // Richiediamo il servizio complementare
-        //richiediServizio2();
+        richiediServizio2();
         
     }
     
     public void richiediServizio(){
         
-        // Richiesta al gestore
+        // Richiesta al gestore e blocco del thread corrente
+        
+        // Quando il gestore mi sblocca acquisisco la pista dell'aeroporto
+        Aeroporto.usoPista();
         
         // Comunico i tempi di decollo e atterraggio
         if (azione == 1)
             decollo();
         else atterraggio();
-        /*try {
-            // Blocco il thread aereo
-            wait();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Aereo.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
+        
+        // Rilascio la pista dell'aeroporto
+        Aeroporto.rilascioPista();
     }
     
     public void richiediServizio2(){
         
-        // Richiesta al gestore
+        // Richiesta al gestore e blocco del thread corrente
         
-        // Procedo con la richiesta complementare
+        // Quando il gestore mi sblocca acquisisco la pista dell'aeroporto
+        Aeroporto.usoPista();
+        
+        // Procedo con la richiesta complementare alla precedente
         if (azione == 1)
             atterraggio();
         else decollo();
-        /*try {
-            // Blocco il thread aereo
-            wait();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Aereo.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
         
+        // Rilascio la pista dell'aeroporto
+        Aeroporto.rilascioPista();
     }
     
     public void decollo(){

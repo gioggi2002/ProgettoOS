@@ -15,6 +15,7 @@ public class Gestore extends Thread {
         this.aeroporto = aeroporto;
     }
     
+    @Override
     public void run(){
         
     }
