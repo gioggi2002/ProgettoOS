@@ -15,9 +15,9 @@ public class Gestore extends Thread {
     //static Semaphore semaforoGestore;
     Aeroporto aeroporto;
     
-    public Gestore (int threadAttivi){
+    public Gestore (Aeroporto aeroporto){
     //    semaforoGestore = new Semaphore(this.threadAttivi);
-        Aeroporto aeroporto = new Aeroporto(2);
+        this.aeroporto = aeroporto;
     }
     
     @Override
@@ -31,7 +31,7 @@ public class Gestore extends Thread {
             //Aeroporto.rilascioPista();
             //System.out.println("Azione compiuta correttamente.");
         }
-        else System.out.println("Piste occupate.");
+        //else System.out.println("Piste occupate.");
     }
     
     public void fineServizio(){

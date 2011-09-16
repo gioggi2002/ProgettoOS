@@ -12,16 +12,17 @@ import java.util.logging.Logger;
  * @author gioggi2002
  */
 public class Aereo extends Thread {
-    private int id;
+    public int id;
     private int tipo;
     private int azione;
     private int peso;
-    Gestore gestore;
+    private Gestore gestore = null;
     
     
-    public Aereo(int id, double tipo, double azione, double peso)
+    //public Aereo(int id, double tipo, double azione, double peso)
+    public Aereo(Gestore gestore)
     {
-        gestore = new Gestore(2);
+        this.gestore = gestore;
         
     }
     
@@ -48,12 +49,12 @@ public class Aereo extends Thread {
         azione = (int) (Math.random()*2);
         if (azione == 1) {
             // Aumentiamo la priorità per l'aereo in atterraggio
-            System.out.println("L'azione richiesta dall'aereo "+id+" e' l'atterraggio. ");
+            System.out.println("L'azione richiesta dall'aereo "+id+" e' l'atterraggio.");
             current.setPriority(current.getPriority()+2);
             System.out.println("L'aereo "+id+" guadagna priorita': "+current.getPriority());
         }
         else { 
-            System.out.println("L'azione richiesta dall'aereo "+id+" e' il decollo. ");
+            System.out.println("L'azione richiesta dall'aereo "+id+" e' il decollo.");
             System.out.println("L'aereo "+id+" conserva priorita': "+current.getPriority());
         }
         // Otteniamo il peso dell'aereo
@@ -63,12 +64,17 @@ public class Aereo extends Thread {
         // Richiediamo il servizio
         azione1();
         
-        if(azione == 1)
+        if(azione == 1){
             azione = 0;
-        else azione = 1;
+            System.out.println("L'aereo "+id+" richiede ora di atterrare.");
+        }
+        else {
+            azione = 1;
+            System.out.println("L'aereo "+id+" richiede ora di decollare.");
+        }
         
         // Richiediamo il servizio complementare
-        //azione1();
+        azione1();
         
     }
     
