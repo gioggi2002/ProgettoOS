@@ -12,10 +12,10 @@ import java.util.logging.Logger;
  * @author gioggi2002
  */
 public class Aereo extends Thread {
-    int id;
-    int tipo;
-    int azione;
-    int peso;
+    static int id;
+    static int tipo;
+    static int azione;
+    static int peso;
     
     
     public Aereo(int id, double tipo, double azione, double peso)
@@ -30,7 +30,7 @@ public class Aereo extends Thread {
         
         // Otteniamo l'id del thread
         Thread current = Thread.currentThread();
-        id = (int) (current.getId()-9);
+        id = (int) (current.getId()-10);
         // Otteniamo il tipo di aereo (di linea/privato)
         tipo = (int) (Math.random()*2);
         if (tipo == 1) {
@@ -60,46 +60,35 @@ public class Aereo extends Thread {
         //System.out.println("Il peso dell'aereo "+id+" e': "+peso);
         
         // Richiediamo il servizio
-        richiediServizio();
+        azione1();
+        
+        if(azione == 1)
+            azione = 0;
+        else azione = 1;
+        
+        azione1();
         
         // Richiediamo il servizio complementare
-        richiediServizio2();
+        //richiediServizio2();
         
     }
     
-    public void richiediServizio(){
+    static public void azione1(){
         
         // Richiesta al gestore e blocco del thread corrente
+        Gestore.richiediServizio();
         
         // Quando il gestore mi sblocca acquisisco la pista dell'aeroporto
-        Aeroporto.usoPista();
+        if (Aereo.azione == 1)
+                Aereo.decollo();
+            else Aereo.atterraggio();
         
-        // Comunico i tempi di decollo e atterraggio
-        if (azione == 1)
-            decollo();
-        else atterraggio();
+        // Comunico al gestore che ho finito e la pista può essere rilasciata
+        Gestore.fineServizio();
         
-        // Rilascio la pista dell'aeroporto
-        Aeroporto.rilascioPista();
     }
-    
-    public void richiediServizio2(){
-        
-        // Richiesta al gestore e blocco del thread corrente
-        
-        // Quando il gestore mi sblocca acquisisco la pista dell'aeroporto
-        Aeroporto.usoPista();
-        
-        // Procedo con la richiesta complementare alla precedente
-        if (azione == 1)
-            atterraggio();
-        else decollo();
-        
-        // Rilascio la pista dell'aeroporto
-        Aeroporto.rilascioPista();
-    }
-    
-    public void decollo(){
+      
+    static public void decollo(){
         int tempo;
         // Sospendo il thread per completare il decollo
         tempo = 20+(1*peso);
@@ -111,7 +100,7 @@ public class Aereo extends Thread {
         System.out.println("L'aereo "+id+" e' decollato in "+tempo+"ms");
     }
     
-    public void atterraggio(){
+    static public void atterraggio(){
         int tempo;
         // Sospendo il thread per completare l'atterraggio
         tempo = 50+(1*peso);

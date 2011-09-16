@@ -23,14 +23,13 @@ public class Aeroporto {
         try{
             System.out.println(semaforo.availablePermits());
             semaforo.acquire();
-            if (semaforo.availablePermits()==0){
-            System.out.println("Nessuna pista disponibile.");
-            return true;}
+            if (semaforo.availablePermits()<0){
+            //System.out.println("Nessuna pista disponibile.");
+            return false;}
             else System.out.println("Pista utilizzata con successo.");
-        }catch(InterruptedException e){}
-        
-        return false;
-        
+            return true;
+        }catch(InterruptedException e){return false;}
+                
     }
     
     static public void rilascioPista(){
