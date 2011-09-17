@@ -5,6 +5,7 @@
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -26,9 +27,11 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author gioggi2002
  */
 public class Gestore extends Thread {
-    Aeroporto aeroporto;
+    Aeroporto aerop;
     private boolean run;
     Semaphore semaforo;
+    Aereo aereo;
+    Gestore gest;
     private ReentrantLock lockAccesso = null;
     private HashMap<Aereo,Condition> priorita1 = null;
     private HashMap<Aereo,Condition> priorita2 = null;
@@ -46,9 +49,11 @@ public class Gestore extends Thread {
     private Object[] array;
     
     public Gestore (Aeroporto aeroporto){
-        this.aeroporto = aeroporto;
+        this.aerop = aeroporto;
         this.run = true;
-        semaforo = new Semaphore(0);
+        this.semaforo = new Semaphore(0);
+        this.gest = new Gestore(aeroporto);
+        this.aereo = new Aereo(gest, aerop);
         this.lockAccesso = new ReentrantLock();
         this.priorita1 = new HashMap<Aereo,Condition>();
         this.priorita2 = new HashMap<Aereo,Condition>();
@@ -62,7 +67,7 @@ public class Gestore extends Thread {
         /* finche non arriva una terminazione differita cerca di servire */
         while(this.run){
             try{
-                this.gestioneGestore(this);
+                this.gestioneGestore(this.aereo,this);
             }catch(InterruptedException e){
                 this.run=false;
             }
@@ -115,7 +120,7 @@ public class Gestore extends Thread {
     }
     
     
-    public void gestioneGestore(Gestore gestore) throws InterruptedException{
+    public void gestioneGestore(Aereo a, Gestore gestore) throws InterruptedException{
          this.semaforo.acquire();
         // Inizio sezione critica
         this.lockAccesso.lock();
@@ -123,7 +128,7 @@ public class Gestore extends Thread {
                 // Seleziono l'aereo in base alla priorità
                 Aereo maxPriorita = selezioneAereo();
                 // Concedo il servizio all'aereo
-                System.out.println("Servizio fatto.");
+                this.aereo.azione1(this.aereo);
                 // Rimuovo l'aereo dalla coda
                 this.rimuoviAereo(maxPriorita);
         }finally{
@@ -170,8 +175,35 @@ public class Gestore extends Thread {
     } // Fine metodo
     
     private void maxPesoAereo(HashMap map){
-        
+        for (Iterator i = sortByValue(map).iterator(); i.hasNext();) {
+            String key = (String) i.next();
+            System.out.printf("key: %s, value: %s\n", key, map.get(key));
+        }
     }
+    
+    public static List sortByValue(final Map map) {
+        List keys = new ArrayList();
+        keys.addAll(map.keySet());
+        Collections.sort(keys, new Comparator() {
+            @Override
+            public int compare(Object o1, Object o2) {
+                Object v1 = map.get(o1);
+                Object v2 = map.get(o2);
+                if (v1 == null) {
+                    return (v2 == null) ? 0 : 1;
+                }
+                else if (v1 instanceof Comparable) {
+                    return ((Comparable) v1).compareTo(v2);
+                }
+                else {
+                    return 0;
+                }
+            }
+        });
+        return keys;
+    }
+        
+        
     
     private void rimuoviAereo(Aereo a){
         Aereo daRimuovere = a;

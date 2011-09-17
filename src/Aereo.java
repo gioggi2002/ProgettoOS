@@ -99,34 +99,32 @@ public class Aereo extends Thread {
         
     }
     
-    /*public void azione1(Aereo a, int peso, int priorita, int id) throws InterruptedException{
+    public void azione1(Aereo a/*, int peso, int priorita, int id*/) throws InterruptedException{
         int tempo = 0;
         
         // Richiesta al gestore e blocco del thread corrente
-        aeroporto.richiediServizio(this, peso, priorita, id);
         
         // Quando il gestore mi sblocca acquisisco la pista dell'aeroporto
-        if (azione == 1)
+        if (this.azione == 1)
                 tempo = decollo();
             else tempo = atterraggio();
         
         // Comunico al gestore che ho finito e la pista può essere rilasciata
         
-        
         //System.out.println("L'aereo ha completato l'azione in "+tempo+"ms");
         
-    }*/
+    }
       
     public int decollo(){
         int tempo;
         // Sospendo il thread per completare il decollo
-        tempo = 20+(1*peso);
+        tempo = 20+(1*this.peso);
         try {
             Thread.sleep(tempo);
         } catch (InterruptedException ex) {
             Logger.getLogger(Aereo.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("L'aereo "+id+" e' decollato in "+tempo+"ms");
+        System.out.println("L'aereo "+this.id+" e' decollato in "+tempo+"ms");
         return tempo;
     }
     
