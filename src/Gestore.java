@@ -1,4 +1,7 @@
 
+import java.util.concurrent.Semaphore;
+
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -10,7 +13,7 @@
  */
 public class Gestore extends Thread {
     Aeroporto aeroporto;
-    private boolean run;    
+    private boolean run;  
     
     public Gestore (Aeroporto aeroporto){
         this.aeroporto = aeroporto;

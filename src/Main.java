@@ -33,7 +33,7 @@ public class Main {
         Thread threadArray[] = new Thread[numAerei];
         for(i = 0; i < numAerei; ++i){
             
-            threadArray[i] = new Aereo(gestore);
+            threadArray[i] = new Aereo(gestore, aeroporto);
             threadArray[i].start();
             threadArray[i].setPriority(1);
         }

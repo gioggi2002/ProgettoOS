@@ -25,10 +25,10 @@ public class Aereo extends Thread {
     
     
     //public Aereo(int id, double tipo, double azione, double peso)
-    public Aereo(Gestore gestore)
+    public Aereo(Gestore gestore, Aeroporto aeroporto)
     {
         this.gestore = gestore;
-        
+        this.aeroporto = aeroporto;
         
     }
     
@@ -89,7 +89,7 @@ public class Aereo extends Thread {
         
         // Richiediamo il servizio complementare
         try {
-            this.aeroporto.richiediServizio(a, peso, priorita, id);
+            this.aeroporto.richiediServizio(this, peso, priorita, id);
             //azione1(this, peso, priorita, id);
         }catch (InterruptedException e) {
             System.out.println(e);
