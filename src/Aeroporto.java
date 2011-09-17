@@ -19,12 +19,13 @@ public class Aeroporto {
     int numeroPiste = 2;
     //int pisteInUso = 0;
     Semaphore semaforo;
+    Semaphore pisteDisponibili;
     private ReentrantLock lockAccesso = null;
     private HashMap<Aereo,Condition> priorita1 = null;
     private HashMap<Aereo,Condition> priorita2 = null;
     private HashMap<Aereo,Condition> priorita3 = null;
     private HashMap<Aereo,Condition> priorita4 = null;
-    private HashMap<Gestore,Condition> gestore = null;
+    private Gestore gestore;
     private int richiesteAerei;
     private int aereiServiti4;
     private int aereiServiti3;
@@ -37,13 +38,14 @@ public class Aeroporto {
     
     public Aeroporto(int numeroPiste){
         semaforo = new Semaphore(0);
+        pisteDisponibili = new Semaphore(2);
         this.lockAccesso = new ReentrantLock();
         this.priorita1 = new HashMap<Aereo,Condition>();
         this.priorita2 = new HashMap<Aereo,Condition>();
         this.priorita3 = new HashMap<Aereo,Condition>();
         this.priorita4 = new HashMap<Aereo,Condition>();
         int richiesteAerei = 0;
-        this.gestore = new HashMap<Gestore,Condition>();
+        
     }
     
     public void richiediServizio(Aereo a, int peso, int priorita, int id)
@@ -65,21 +67,25 @@ public class Aeroporto {
                     this.priorita4.put(a,this.lockAccesso.newCondition());
                     this.priorita4.get(a).await();
                     System.out.println("Aereo "+id+" aggiunto alla coda 4");
+                    gestioneGestore(this.gestore);
                     break;
                 case 3:
                     this.priorita3.put(a,this.lockAccesso.newCondition());
                     this.priorita3.get(a).await();
                     System.out.println("Aereo "+id+" aggiunto alla coda 3");
+                    gestioneGestore(this.gestore);
                     break;
                 case 2:
                     this.priorita2.put(a,this.lockAccesso.newCondition());
                     this.priorita2.get(a).await();
                     System.out.println("Aereo "+id+" aggiunto alla coda 2");
+                    gestioneGestore(this.gestore);
                     break;
                 case 1:
                     this.priorita1.put(a,this.lockAccesso.newCondition());
                     this.priorita1.get(a).await();
                     System.out.println("Aereo "+id+" aggiunto alla coda 1");
+                    gestioneGestore(this.gestore);
                     break;
                 default:
                     ritorno = false;
@@ -98,10 +104,8 @@ public class Aeroporto {
         this.lockAccesso.lock();
         try{
             semaforo.acquire();
-            if (semaforo.availablePermits() == 0){
-                this.gestore.put(gestore,this.lockAccesso.newCondition());
-                this.gestore.get(gestore).await();
-            }else{
+            try{
+                pisteDisponibili.acquire();
                 // Seleziono l'aereo in base alla priorità
                 Aereo maxPriorita = selezioneAereo();
                 // Concedo il servizio all'aereo
@@ -110,7 +114,11 @@ public class Aeroporto {
                 this.richiesteAerei--;
                 // Rimuovo l'aereo dalla coda
                 this.rimuoviAereo(maxPriorita);
+            }catch(InterruptedException e){
+                  System.out.println(e);
             }
+        }catch(InterruptedException e){
+            System.out.println(e);
         }finally{
             this.lockAccesso.unlock();
         }
@@ -149,6 +157,9 @@ public class Aeroporto {
         } // Fine ciclo while
         return daServire; // Ritorno l'aereo che ha accesso alla pista
     } // Fine metodo
+    
+    /*private int[] maxPesoAereo(HashMap<Aereo,Condition> map, int temp){
+    }*/
     
     private void rimuoviAereo(Aereo a){
         Aereo daRimuovere = a;
