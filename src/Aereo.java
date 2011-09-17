@@ -1,4 +1,5 @@
 
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,12 +19,16 @@ public class Aereo extends Thread {
     private int peso;
     public int priorita;
     private Gestore gestore = null;
+    Aereo a;
+    private Random randomizer = new Random();
+    private Aeroporto aeroporto = null;
     
     
     //public Aereo(int id, double tipo, double azione, double peso)
     public Aereo(Gestore gestore)
     {
         this.gestore = gestore;
+        
         
     }
     
@@ -65,8 +70,14 @@ public class Aereo extends Thread {
         priorita = current.getPriority();
         
         // Richiediamo il servizio
-        azione1(peso, priorita);
+        try {
+            this.aeroporto.richiediServizio(this, peso, priorita, id);
+            //azione1(this, peso, priorita, id);
+        }catch (InterruptedException e) {
+            System.out.println(e);
+        }
         
+        // Determiniamo il servizio complementare
         if(azione == 1){
             azione = 0;
             System.out.println("L'aereo "+id+" richiede ora di atterrare.");
@@ -77,15 +88,20 @@ public class Aereo extends Thread {
         }
         
         // Richiediamo il servizio complementare
-        azione1(peso, priorita);
+        try {
+            this.aeroporto.richiediServizio(a, peso, priorita, id);
+            //azione1(this, peso, priorita, id);
+        }catch (InterruptedException e) {
+            System.out.println(e);
+        }
         
     }
     
-    public void azione1(int peso, int priorita){
+    /*public void azione1(Aereo a, int peso, int priorita, int id) throws InterruptedException{
         int tempo = 0;
         
         // Richiesta al gestore e blocco del thread corrente
-        gestore.richiediServizio(peso, priorita);
+        aeroporto.richiediServizio(this, peso, priorita, id);
         
         // Quando il gestore mi sblocca acquisisco la pista dell'aeroporto
         if (azione == 1)
@@ -93,11 +109,11 @@ public class Aereo extends Thread {
             else tempo = atterraggio();
         
         // Comunico al gestore che ho finito e la pista può essere rilasciata
-        gestore.fineServizio();
+        
         
         //System.out.println("L'aereo ha completato l'azione in "+tempo+"ms");
         
-    }
+    }*/
       
     public int decollo(){
         int tempo;
