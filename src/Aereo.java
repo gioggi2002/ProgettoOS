@@ -1,4 +1,6 @@
 
+
+
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -71,7 +73,7 @@ public class Aereo extends Thread {
         
         // Richiediamo il servizio
         try {
-            this.aeroporto.richiediServizio(this, peso, priorita, id);
+            this.gestore.richiediServizio(this, peso, priorita, id);
             //azione1(this, peso, priorita, id);
         }catch (InterruptedException e) {
             System.out.println(e);
@@ -89,7 +91,7 @@ public class Aereo extends Thread {
         
         // Richiediamo il servizio complementare
         try {
-            this.aeroporto.richiediServizio(this, peso, priorita, id);
+            this.gestore.richiediServizio(this, peso, priorita, id);
             //azione1(this, peso, priorita, id);
         }catch (InterruptedException e) {
             System.out.println(e);
