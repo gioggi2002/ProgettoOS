@@ -23,6 +23,11 @@ public class Aereoporto {
     LinkedList<Aereo> lista2 = new LinkedList();
     LinkedList<Aereo> lista3 = new LinkedList();
     LinkedList<Aereo> lista4 = new LinkedList();
+    private int serviti1;
+    private int serviti2;
+    private int serviti3;
+    private int serviti4;
+    private long tempoMedioAttesa;
     /**
      * @param args the command line arguments
      */
@@ -32,6 +37,11 @@ public class Aereoporto {
         this.accesso = new ReentrantLock();
         this.aerei = new Semaphore(0);
         this.piste = new Semaphore(this.numPiste);
+        this.serviti1 = 0;
+        this.serviti2 = 0;
+        this.serviti3 = 0;
+        this.serviti4 = 0;
+        this.tempoMedioAttesa = 0;
     }
     
     public void richiediServizio(Aereo a,int priorita) throws InterruptedException{
@@ -42,24 +52,32 @@ public class Aereoporto {
             switch(priorita){
                 case 1:
                     lista1.add(a);
+                    //this.arrivo1+=System.currentTimeMillis();
+                    //System.out.println("Tempo attuale: "+System.currentTimeMillis());
                     Collections.sort(lista1,new MyComparator());
                     a.setCondition(this.accesso.newCondition());
                     a.getCondition().await();
                     break;
                 case 2:
                     lista2.add(a);
+                    //this.arrivo2+=System.currentTimeMillis();
+                    //System.out.println("Tempo attuale: "+System.currentTimeMillis());
                     Collections.sort(lista2,new MyComparator());
                     a.setCondition(this.accesso.newCondition());
                     a.getCondition().await();
                     break;
                 case 3:
                     lista3.add(a);
+                    //this.arrivo3+=System.currentTimeMillis();
+                    //System.out.println("Tempo attuale: "+System.currentTimeMillis());
                     Collections.sort(lista3,new MyComparator());
                     a.setCondition(this.accesso.newCondition());
                     a.getCondition().await();
                     break;
                 case 4:
                     lista4.add(a);
+                    //this.arrivo4+=System.currentTimeMillis();
+                    //System.out.println("Tempo attuale: "+System.currentTimeMillis());
                     Collections.sort(lista4,new MyComparator());
                     a.setCondition(this.accesso.newCondition());
                     a.getCondition().await();
@@ -71,6 +89,7 @@ public class Aereoporto {
             this.accesso.unlock();
         }
     }
+    
     public void gestisci()throws InterruptedException{
         this.aerei.acquire();
         
@@ -80,17 +99,18 @@ public class Aereoporto {
             //System.out.println("Pista libera e acquisita.");
             Aereo daServire = Sveglia();
             if(daServire.getServizio() == 0)
-                daServire.Atterra();
+                daServire.atterra();
             else
-                daServire.Decolla();
+                daServire.decolla();
             
             //System.out.println("L'aereo "+daServire.getIdAlt()+" di peso "+daServire.getPeso()+" ha completato l'azione.");
             daServire.getCondition().signal();
-            
+            this.tempoMedioAttesa = daServire.calcoloTempoAttesa();
         }finally{
             this.accesso.unlock();
         }
     }
+    
     Aereo Sveglia(){
         Aereo daServire = null;
         while(daServire == null){
@@ -98,27 +118,50 @@ public class Aereoporto {
                 daServire = this.lista4.getFirst();
                 //System.out.println("Trovato aereo in lista 4.");
                 this.lista4.removeFirst();
+                //this.uscita4+=System.currentTimeMillis();
+                //System.out.println("Tempo di uscita: "+System.currentTimeMillis());
+                this.serviti4++;
             }else{
                 if(!this.lista3.isEmpty()){
                     daServire = this.lista3.getFirst();
                     //System.out.println("Trovato aereo in lista 3.");
                     this.lista3.removeFirst();
+                    //this.uscita3+=System.currentTimeMillis();
+                    //System.out.println("Tempo di uscita: "+System.currentTimeMillis());
+                    this.serviti3++;
                 }else{
                     if(!this.lista2.isEmpty()){
                         daServire=this.lista2.getFirst();
                         //System.out.println("Trovato aereo in lista 2.");
                         this.lista2.removeFirst();
+                        //this.uscita2+=System.currentTimeMillis();
+                        //System.out.println("Tempo di uscita: "+System.currentTimeMillis());
+                        this.serviti2++;
                     }else{
                         if(!this.lista1.isEmpty()){
                             daServire = this.lista1.getFirst();
                             //System.out.println("Trovato aereo in lista 1.");
                             this.lista1.removeFirst();
+                            //this.uscita1+=System.currentTimeMillis();
+                            //System.out.println("Tempo di uscita: "+System.currentTimeMillis());
+                            this.serviti1++;
                         }
                     }
                 }
             }
         }
         return daServire;
+    }
+    
+    public void tempoAttesa(){
+        if(this.serviti4!=0)
+        System.out.println("Richieste a priorità 4 servite= "+this.serviti4+" tempo medio="+this.tempoMedioAttesa/this.serviti4+" ms");
+        if(this.serviti3!=0)
+        System.out.println("Richieste a priorità 3 servite= "+this.serviti3+" tempo medio="+this.tempoMedioAttesa/this.serviti3+" ms");
+        if(this.serviti2!=0)
+        System.out.println("Richieste a priorità 2 servite= "+this.serviti2+" tempo medio="+this.tempoMedioAttesa/this.serviti2+" ms");
+        if(this.serviti1!=0)
+        System.out.println("Richieste a priorità 1 servite= "+this.serviti1+" tempo medio="+this.tempoMedioAttesa/this.serviti1+" ms");
     }
 }
 
