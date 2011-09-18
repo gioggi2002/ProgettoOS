@@ -62,13 +62,14 @@ public class Aereo extends Thread {
         id = (int) (current.getId()-10);
         current.setPriority(1);
         this.servizio=this.rnd.nextInt(2);
-        if (this.servizio == 1)
+        if (this.servizio == 0)
             current.setPriority(current.getPriority()+2);
         this.tipo=this.rnd.nextInt(2);
         if (this.tipo == 1)
             current.setPriority(current.getPriority()+1);
         System.out.println("Priorità dell'aereo "+this.id+" è "+current.getPriority());
         this.priorita = current.getPriority();
+        current.setPriority(4);
         switch(current.getPriority()) {
             case 1:
                 this.arrivo1+=System.currentTimeMillis();
@@ -114,9 +115,10 @@ public class Aereo extends Thread {
                 break;
             case 4:
                 this.uscita4+=System.currentTimeMillis();
-                System.out.println("Tempo uscita aereo "+this.id+" è "+System.currentTimeMillis());
+                //System.out.println("Tempo uscita aereo "+this.id+" è "+System.currentTimeMillis());
                 break;
         }
+        
 }
         
     public void atterra() throws InterruptedException{
@@ -141,6 +143,7 @@ public class Aereo extends Thread {
             case 1:
                 this.tempoMedioAttesa = (this.uscita1 - this.arrivo1 - this.tempoAtt - this.tempoDec);
                 System.out.println(this.uscita1);
+                System.out.println(this.arrivo1);
                 break;
             case 2:
                 this.tempoMedioAttesa = (this.uscita2 - this.arrivo2 - this.tempoAtt - this.tempoDec);

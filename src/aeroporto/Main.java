@@ -49,6 +49,7 @@ public class Main {
         }
         System.out.println();
         System.out.println("-----");
+        System.out.println();
         System.out.println("Aerei terminati. Esecuzione completata.");
         
         gestore.interrupt();
