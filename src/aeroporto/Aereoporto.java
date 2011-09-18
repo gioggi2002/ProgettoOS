@@ -86,7 +86,7 @@ public class Aereoporto {
                     break;
                 case 4:
                     lista4.add(a);
-                    this.arrivo4=System.currentTimeMillis();
+                        this.arrivo4=System.currentTimeMillis();
                     System.out.println("Tempo di entrata nella coda: "+System.currentTimeMillis());
                     Collections.sort(lista4,new MyComparator());
                     a.setCondition(this.accesso.newCondition());
