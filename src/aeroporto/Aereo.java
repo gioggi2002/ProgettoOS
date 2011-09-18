@@ -19,18 +19,6 @@ public class Aereo extends Thread {
     private int servizio;
     private long tempoAtt;
     private long tempoDec;
-    private long arrivo1;
-    private long arrivo2;
-    private long arrivo3;
-    private long arrivo4;
-    private long uscita1;
-    private long uscita2;
-    private long uscita3;
-    private long uscita4;
-    private long tempoMedioAttesa;
-    private long tempoMedioAttesa2;
-    private long tempoMedioAttesa3;
-    private long tempoMedioAttesa4;
     private Aereoporto aereoporto = null;
     private Gestore gest = null;
     Condition condizione;
@@ -41,16 +29,6 @@ public class Aereo extends Thread {
         this.peso = peso;
         this.tipo = tipo;
         this.priorita = 1;
-        //this.tempoAtt = tempoAtt;
-        //this.tempoDec = tempoDec;
-        this.arrivo1 = 0;
-        this.arrivo2 = 0;
-        this.arrivo3 = 0;
-        this.arrivo4 = 0;
-        this.uscita1 = 0;
-        this.uscita2 = 0;
-        this.uscita3 = 0;
-        this.uscita4 = 0;
         this.gest = gestore;
         this.aereoporto = aereoporto;
         rnd = new Random();
@@ -69,24 +47,6 @@ public class Aereo extends Thread {
             current.setPriority(current.getPriority()+1);
         //System.out.println("Priorità dell'aereo "+this.id+" è "+current.getPriority());
         this.priorita = current.getPriority();
-        switch(current.getPriority()) {
-            case 1:
-                this.arrivo1+=System.currentTimeMillis();
-                //System.out.println("Tempo entrata aereo "+this.id+" è "+System.currentTimeMillis());
-                break;
-            case 2:
-                this.arrivo2+=System.currentTimeMillis();
-                //System.out.println("Tempo entrata aereo "+this.id+" è "+System.currentTimeMillis());
-                break;
-            case 3:
-                this.arrivo3+=System.currentTimeMillis();
-                //System.out.println("Tempo entrata aereo "+this.id+" è "+System.currentTimeMillis());
-                break;
-            case 4:
-                this.arrivo4+=System.currentTimeMillis();
-                //System.out.println("Tempo entrata aereo "+this.id+" è "+System.currentTimeMillis());
-                break;
-        }
         for(int i=0;i<2;i++){
             try{
                 this.aereoporto.richiediServizio(this,current.getPriority());
@@ -105,25 +65,6 @@ public class Aereo extends Thread {
                 System.out.println(e);
             }
         }
-        switch(current.getPriority()) {
-            case 1:
-                this.uscita1+=System.currentTimeMillis();
-                //System.out.println("Tempo uscita aereo "+this.id+" è "+System.currentTimeMillis());
-                break;
-            case 2:
-                this.uscita2+=System.currentTimeMillis();
-                //System.out.println("Tempo uscita aereo "+this.id+" è "+System.currentTimeMillis());
-                break;
-            case 3:
-                this.uscita3+=System.currentTimeMillis();
-                //System.out.println("Tempo uscita aereo "+this.id+" è "+System.currentTimeMillis());
-                break;
-            case 4:
-                this.uscita4+=System.currentTimeMillis();
-                //System.out.println("Tempo uscita aereo "+this.id+" è "+System.currentTimeMillis());
-                break;
-        }
-        
 }
         
     public void atterra() throws InterruptedException{
@@ -137,24 +78,6 @@ public class Aereo extends Thread {
         Thread.sleep(this.tempoDec);
         this.gest.liberaPista();
         //System.out.println("Aereo "+this.id+" di peso "+this.peso+" e priorità "+this.getPriority()+" ha completato il decollo in "+this.tempoDec+"ms.");
-    }
-    
-    public long calcoloTempoAttesa(){
-        switch (this.priorita){
-            case 1:
-                this.tempoMedioAttesa = (this.uscita1 - this.arrivo1 - this.tempoAtt - this.tempoDec);
-                break;
-            case 2:
-                this.tempoMedioAttesa = (this.uscita2 - this.arrivo2 - this.tempoAtt - this.tempoDec);
-                break;
-            case 3:
-                this.tempoMedioAttesa = (this.uscita3 - this.arrivo3 - this.tempoAtt - this.tempoDec);
-                break;
-            case 4:
-                this.tempoMedioAttesa = (this.uscita4 - this.arrivo4 - this.tempoAtt - this.tempoDec);
-                break;
-        }
-        return this.tempoMedioAttesa;            
     }
     
     public int getServizio(){

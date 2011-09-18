@@ -123,7 +123,6 @@ public class Aereoporto {
             //System.out.println("L'aereo "+daServire.getIdAlt()+" di peso "+daServire.getPeso()+" ha completato l'azione.");
             daServire.getCondition().signal();
 
-            this.tempoMedioAttesa = daServire.calcoloTempoAttesa();
         }finally{
             this.accesso.unlock();
         }
