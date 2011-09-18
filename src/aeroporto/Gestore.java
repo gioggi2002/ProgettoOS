@@ -27,6 +27,8 @@ public class Gestore extends Thread{
         }
     }
     
+    // Metodo per la liberazione della pista
+    // mediante l'uso del semaforo
     public void liberaPista(){
         this.aereoporto.piste.release();
     }

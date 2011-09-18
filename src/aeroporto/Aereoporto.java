@@ -41,10 +41,12 @@ public class Aereoporto {
      */
     
     public Aereoporto(){
+        // Variabili per la sincronizzazione
         this.numPiste = 2;
         this.accesso = new ReentrantLock();
         this.aerei = new Semaphore(0);
         this.piste = new Semaphore(this.numPiste);
+        // Variabili per il calcolo del tempo medio d'attesa nelle code
         this.serviti1 = 0;
         this.serviti2 = 0;
         this.serviti3 = 0;
@@ -57,7 +59,6 @@ public class Aereoporto {
         this.arrivo2 = 0;
         this.arrivo3 = 0;
         this.arrivo4 = 0;
-        this.tempoMedioAttesa = 0;
     }
     
     public void richiediServizio(Aereo a,int priorita) throws InterruptedException{
@@ -65,6 +66,9 @@ public class Aereoporto {
         try{
             this.aerei.release();
             //System.out.println("Aereo "+a.getIdAlt()+" di peso "+a.getPeso()+" messo in lista "+priorita);
+            
+            // Switch per determinare la coda a cui aggiungere l'aereo
+            // Inoltre viene memorizzato il tempo d'entrata in coda
             switch(priorita){
                 case 1:
                     lista1.add(a);
@@ -106,6 +110,7 @@ public class Aereoporto {
         }
     }
     
+    // Metodo per l'erogazione del servizio
     public void gestisci()throws InterruptedException{
         this.aerei.acquire();
         
@@ -128,6 +133,8 @@ public class Aereoporto {
         }
     }
     
+    // Metodo per svegliare l'aereo e rimuoverlo dalla coda
+    // inoltre viene memorizzato il tempo di uscita dalla coda
     Aereo Sveglia(){
         Aereo daServire = null;
         while(daServire == null){
@@ -170,6 +177,7 @@ public class Aereoporto {
         return daServire;
     }
     
+    // Metodo per il calcolo del tempo medio d'attesa per ogni coda
     public void tempoAttesa(){
         System.out.println();
         System.out.println("-----");

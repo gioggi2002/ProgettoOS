@@ -29,6 +29,7 @@ public class Main {
                 System.out.println("Inserisci il numero di Aerei: ");
                 line = input.readLine();
             }
+            
         numAerei= Integer.parseInt(line);
         Aereo aerei[] = new Aereo[numAerei];
         for(int i = 0; i < numAerei; i++){
@@ -47,6 +48,8 @@ public class Main {
                     System.out.println(e);
             }
         }
+        
+        // Stampa dei tempi medi d'attesa
         System.out.println();
         System.out.println("-----");
         System.out.println();
