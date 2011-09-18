@@ -31,6 +31,9 @@ public class Aereoporto {
     private long uscita2;
     private long uscita3;
     private long uscita4;
+    private long arrivo1;
+    private long arrivo2;
+    private long arrivo3;
     private long arrivo4;
     private long tempoMedioAttesa;
     /**
@@ -50,6 +53,9 @@ public class Aereoporto {
         this.uscita2 = 0;
         this.uscita3 = 0;
         this.uscita4 = 0;
+        this.arrivo1 = 0;
+        this.arrivo2 = 0;
+        this.arrivo3 = 0;
         this.arrivo4 = 0;
         this.tempoMedioAttesa = 0;
     }
@@ -62,7 +68,7 @@ public class Aereoporto {
             switch(priorita){
                 case 1:
                     lista1.add(a);
-                    //this.arrivo1+=System.currentTimeMillis();
+                    this.arrivo1+=System.currentTimeMillis();
                     //System.out.println("Tempo attuale: "+System.currentTimeMillis());
                     Collections.sort(lista1,new MyComparator());
                     a.setCondition(this.accesso.newCondition());
@@ -70,7 +76,7 @@ public class Aereoporto {
                     break;
                 case 2:
                     lista2.add(a);
-                    //this.arrivo2+=System.currentTimeMillis();
+                    this.arrivo2+=System.currentTimeMillis();
                     //System.out.println("Tempo attuale: "+System.currentTimeMillis());
                     Collections.sort(lista2,new MyComparator());
                     a.setCondition(this.accesso.newCondition());
@@ -78,7 +84,7 @@ public class Aereoporto {
                     break;
                 case 3:
                     lista3.add(a);
-                    //this.arrivo3+=System.currentTimeMillis();
+                    this.arrivo3+=System.currentTimeMillis();
                     //System.out.println("Tempo attuale: "+System.currentTimeMillis());
                     Collections.sort(lista3,new MyComparator());
                     a.setCondition(this.accesso.newCondition());
@@ -86,7 +92,7 @@ public class Aereoporto {
                     break;
                 case 4:
                     lista4.add(a);
-                        this.arrivo4=System.currentTimeMillis();
+                    this.arrivo4=System.currentTimeMillis();
                     System.out.println("Tempo di entrata nella coda: "+System.currentTimeMillis());
                     Collections.sort(lista4,new MyComparator());
                     a.setCondition(this.accesso.newCondition());
@@ -116,24 +122,7 @@ public class Aereoporto {
             
             //System.out.println("L'aereo "+daServire.getIdAlt()+" di peso "+daServire.getPeso()+" ha completato l'azione.");
             daServire.getCondition().signal();
-            /*switch(daServire.getPriorita()) {
-            case 1:
-                this.uscita1+=System.currentTimeMillis();
-                //System.out.println("Tempo uscita aereo "+this.id+" è "+System.currentTimeMillis());
-                break;
-            case 2:
-                this.uscita2+=System.currentTimeMillis();
-                //System.out.println("Tempo uscita aereo "+this.id+" è "+System.currentTimeMillis());
-                break;
-            case 3:
-                this.uscita3+=System.currentTimeMillis();
-                //System.out.println("Tempo uscita aereo "+this.id+" è "+System.currentTimeMillis());
-                break;
-            case 4:
-                this.uscita4=System.currentTimeMillis();
-                //System.out.println("Tempo uscita aereo "+this.id+" è "+System.currentTimeMillis());
-                break;
-        }*/
+
             this.tempoMedioAttesa = daServire.calcoloTempoAttesa();
         }finally{
             this.accesso.unlock();
@@ -147,10 +136,10 @@ public class Aereoporto {
                 daServire = this.lista4.getFirst();
                 //System.out.println("Trovato aereo in lista 4.");
                 this.lista4.removeFirst();
-                if(daServire.getServizio()==1)
-                    this.uscita4=(System.currentTimeMillis()-(20+(1*daServire.getPeso())));
-                else
-                    this.uscita4=(System.currentTimeMillis()-(50+(1*daServire.getPeso())));
+                //if(daServire.getServizio()==1)
+                this.uscita4 = (System.currentTimeMillis());
+                //else
+                //    this.uscita4=(System.currentTimeMillis()-(50+(1*daServire.getPeso())));
                 System.out.println("Tempo di uscita dalla coda: "+System.currentTimeMillis());
                 this.serviti4++;
             }else{
@@ -192,11 +181,11 @@ public class Aereoporto {
         if(this.serviti4!=0)
         System.out.println("Richieste a priorità 4 servite= "+this.serviti4+" tempo medio="+(this.uscita4-this.arrivo4)/this.serviti4+" ms");
         if(this.serviti3!=0)
-        System.out.println("Richieste a priorità 3 servite= "+this.serviti3+" tempo medio="+this.tempoMedioAttesa/this.serviti3+" ms");
+        System.out.println("Richieste a priorità 3 servite= "+this.serviti3+" tempo medio="+(this.uscita3-this.arrivo3)/this.serviti3+" ms");
         if(this.serviti2!=0)
-        System.out.println("Richieste a priorità 2 servite= "+this.serviti2+" tempo medio="+this.tempoMedioAttesa/this.serviti2+" ms");
+        System.out.println("Richieste a priorità 2 servite= "+this.serviti2+" tempo medio="+(this.uscita2-this.arrivo2)/this.serviti2+" ms");
         if(this.serviti1!=0)
-        System.out.println("Richieste a priorità 1 servite= "+this.serviti1+" tempo medio="+this.tempoMedioAttesa/this.serviti1+" ms");
+        System.out.println("Richieste a priorità 1 servite= "+this.serviti1+" tempo medio="+(this.uscita1-this.arrivo1)/this.serviti1+" ms");
     }
 }
 
