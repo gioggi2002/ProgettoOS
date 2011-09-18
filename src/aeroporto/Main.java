@@ -47,10 +47,10 @@ public class Main {
                     System.out.println(e);
             }
         }
-        System.out.println();
-        System.out.println("-----");
-        System.out.println();
-        System.out.println("Aerei terminati. Esecuzione completata.");
+        //System.out.println();
+        //System.out.println("-----");
+        //System.out.println();
+        //System.out.println("Aerei terminati. Esecuzione completata.");
         
         gestore.interrupt();
         

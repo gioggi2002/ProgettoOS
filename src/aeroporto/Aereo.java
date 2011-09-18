@@ -67,24 +67,24 @@ public class Aereo extends Thread {
         this.tipo=this.rnd.nextInt(2);
         if (this.tipo == 1)
             current.setPriority(current.getPriority()+1);
-        System.out.println("Priorità dell'aereo "+this.id+" è "+current.getPriority());
+        //System.out.println("Priorità dell'aereo "+this.id+" è "+current.getPriority());
         this.priorita = current.getPriority();
         switch(current.getPriority()) {
             case 1:
                 this.arrivo1+=System.currentTimeMillis();
-                System.out.println("Tempo entrata aereo "+this.id+" è "+System.currentTimeMillis());
+                //System.out.println("Tempo entrata aereo "+this.id+" è "+System.currentTimeMillis());
                 break;
             case 2:
                 this.arrivo2+=System.currentTimeMillis();
-                System.out.println("Tempo entrata aereo "+this.id+" è "+System.currentTimeMillis());
+                //System.out.println("Tempo entrata aereo "+this.id+" è "+System.currentTimeMillis());
                 break;
             case 3:
                 this.arrivo3+=System.currentTimeMillis();
-                System.out.println("Tempo entrata aereo "+this.id+" è "+System.currentTimeMillis());
+                //System.out.println("Tempo entrata aereo "+this.id+" è "+System.currentTimeMillis());
                 break;
             case 4:
                 this.arrivo4+=System.currentTimeMillis();
-                System.out.println("Tempo entrata aereo "+this.id+" è "+System.currentTimeMillis());
+                //System.out.println("Tempo entrata aereo "+this.id+" è "+System.currentTimeMillis());
                 break;
         }
         for(int i=0;i<2;i++){
@@ -93,12 +93,12 @@ public class Aereo extends Thread {
                 if(servizio == 0){
                     servizio = 1;
                     current.setPriority(current.getPriority()+2);
-                    System.out.println("Nuova priorità aereo "+this.id+": "+current.getPriority());
+                    //System.out.println("Nuova priorità aereo "+this.id+": "+current.getPriority());
                     this.priorita = current.getPriority();
                 }else{
                     servizio = 0;
                     current.setPriority(current.getPriority()-2);
-                    System.out.println("Nuova priorità aereo "+this.id+": "+current.getPriority());
+                    //System.out.println("Nuova priorità aereo "+this.id+": "+current.getPriority());
                     this.priorita = current.getPriority();
                 }
             }catch(InterruptedException e){
@@ -108,15 +108,15 @@ public class Aereo extends Thread {
         switch(current.getPriority()) {
             case 1:
                 this.uscita1+=System.currentTimeMillis();
-                System.out.println("Tempo uscita aereo "+this.id+" è "+System.currentTimeMillis());
+                //System.out.println("Tempo uscita aereo "+this.id+" è "+System.currentTimeMillis());
                 break;
             case 2:
                 this.uscita2+=System.currentTimeMillis();
-                System.out.println("Tempo uscita aereo "+this.id+" è "+System.currentTimeMillis());
+                //System.out.println("Tempo uscita aereo "+this.id+" è "+System.currentTimeMillis());
                 break;
             case 3:
                 this.uscita3+=System.currentTimeMillis();
-                System.out.println("Tempo uscita aereo "+this.id+" è "+System.currentTimeMillis());
+                //System.out.println("Tempo uscita aereo "+this.id+" è "+System.currentTimeMillis());
                 break;
             case 4:
                 this.uscita4+=System.currentTimeMillis();
@@ -127,20 +127,16 @@ public class Aereo extends Thread {
 }
         
     public void atterra() throws InterruptedException{
-        //System.out.println("Aereo "+this.id+" in fase di atterraggio.");
-        //int tempo;
         this.tempoAtt = 50+1*this.peso;
         Thread.sleep(this.tempoAtt);
         this.gest.liberaPista();
-        System.out.println("Aereo "+this.id+" di peso "+this.peso+" e priorità "+this.getPriority()+" ha completato l'atterraggio in "+this.tempoAtt+"ms.");
+        //System.out.println("Aereo "+this.id+" di peso "+this.peso+" e priorità "+this.getPriority()+" ha completato l'atterraggio in "+this.tempoAtt+"ms.");
     }
     public void decolla() throws InterruptedException{
-        //System.out.println("Aereo "+this.id+" in fase di decollo.");
-        int tempo;
-        tempo = 20+1*this.peso;
-        Thread.sleep(tempo);
+        this.tempoDec = 20+1*this.peso;
+        Thread.sleep(this.tempoDec);
         this.gest.liberaPista();
-        System.out.println("Aereo "+this.id+" di peso "+this.peso+" e priorità "+this.getPriority()+" ha completato il decollo in "+tempo+"ms.");
+        //System.out.println("Aereo "+this.id+" di peso "+this.peso+" e priorità "+this.getPriority()+" ha completato il decollo in "+this.tempoDec+"ms.");
     }
     
     public long calcoloTempoAttesa(){
