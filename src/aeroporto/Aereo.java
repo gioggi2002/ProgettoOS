@@ -147,8 +147,6 @@ public class Aereo extends Thread {
         switch (this.priorita){
             case 1:
                 this.tempoMedioAttesa = (this.uscita1 - this.arrivo1 - this.tempoAtt - this.tempoDec);
-                System.out.println(this.uscita1);
-                System.out.println(this.arrivo1);
                 break;
             case 2:
                 this.tempoMedioAttesa = (this.uscita2 - this.arrivo2 - this.tempoAtt - this.tempoDec);

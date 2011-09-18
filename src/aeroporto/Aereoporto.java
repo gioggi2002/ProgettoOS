@@ -110,9 +110,9 @@ public class Aereoporto {
             Aereo daServire = Sveglia();
             System.out.println("Momento in cui viene eseguita l'azione: "+System.currentTimeMillis());
             if(daServire.getServizio() == 0)
-                daServire.atterra();
-            else
                 daServire.decolla();
+            else
+                daServire.atterra();
             
             //System.out.println("L'aereo "+daServire.getIdAlt()+" di peso "+daServire.getPeso()+" ha completato l'azione.");
             daServire.getCondition().signal();
